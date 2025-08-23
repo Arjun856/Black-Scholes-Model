@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black-Scholes Option Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Black-Scholes Option Calculator</h1>
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="S">Stock Price ($):</label>
+                <input type="number" id="S" name="S" value="{{ S }}" step="0.01" min="0.01" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="K">Strike Price ($):</label>
+                <input type="number" id="K" name="K" value="{{ K }}" step="0.01" min="0.01" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="T">Time to Maturity (years):</label>
+                <input type="number" id="T" name="T" value="{{ T }}" step="0.01" min="0.01" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="r">Risk-Free Rate (%):</label>
+                <input type="number" id="r" name="r" value="{{ r }}" step="0.1" min="0" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="sigma">Volatility (%):</label>
+                <input type="number" id="sigma" name="sigma" value="{{ sigma }}" step="0.1" min="0.1" required>
+            </div>
+            
+            <button type="submit">Calculate</button>
+        </form>
+        
+        {% if call_price is not none and put_price is not none %}
+            <div class="results">
+                <div class="result-item">
+                    <h3>Call Option Price:</h3>
+                    <p>${{ "%.2f"|format(call_price) }}</p>
+                </div>
+                <div class="result-item">
+                    <h3>Put Option Price:</h3>
+                    <p>${{ "%.2f"|format(put_price) }}</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
