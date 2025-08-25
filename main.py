@@ -80,6 +80,16 @@ def main():
     sigma = 20
     call_price = None
     put_price = None
+    
+    # Initialize Greeks
+    call_delta = None
+    put_delta = None
+    gamma = None
+    vega = None
+    call_theta = None
+    put_theta = None
+    call_rho = None
+    put_rho = None
     error = None
 
     if request.method == "POST":
@@ -90,8 +100,20 @@ def main():
             r = float(request.form.get("r", 5)) / 100  
             sigma = float(request.form.get("sigma", 20)) / 100  
 
+            # Calculate prices
             call_price = calc_call_option(S, K, T, r, sigma)
             put_price = calc_put_option(S, K, T, r, sigma)
+            
+            # Calculate Greeks
+            call_delta = calc_call_delta(S, K, T, r, sigma)
+            put_delta = calc_put_delta(S, K, T, r, sigma)
+            gamma = calc_gamma(S, K, T, r, sigma)
+            vega = calc_vega(S, K, T, r, sigma)
+            call_theta = calc_call_theta(S, K, T, r, sigma)
+            put_theta = calc_put_theta(S, K, T, r, sigma)
+            call_rho = calc_call_rho(S, K, T, r, sigma)
+            put_rho = calc_put_rho(S, K, T, r, sigma)
+            
         except Exception as e:
             error = f"Calculation error: {str(e)}"
     
@@ -99,6 +121,14 @@ def main():
     return render_template("index.html", 
                           call_price=call_price, 
                           put_price=put_price,
+                          call_delta=call_delta,
+                          put_delta=put_delta,
+                          gamma=gamma,
+                          vega=vega,
+                          call_theta=call_theta,
+                          put_theta=put_theta,
+                          call_rho=call_rho,
+                          put_rho=put_rho,
                           S=S, 
                           K=K, 
                           T=T, 

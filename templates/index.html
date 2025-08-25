@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Black-Scholes Option Calculator</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
@@ -44,14 +44,103 @@
         </form>
         
         {% if call_price is not none and put_price is not none %}
+            <!-- Option Prices -->
             <div class="results">
-                <div class="result-item">
-                    <h3>Call Option Price:</h3>
-                    <p>${{ "%.2f"|format(call_price) }}</p>
+                <h2>Option Prices</h2>
+                <div class="price-results">
+                    <div class="result-item">
+                        <h3>Call Option Price:</h3>
+                        <p>${{ "%.2f"|format(call_price) }}</p>
+                    </div>
+                    <div class="result-item">
+                        <h3>Put Option Price:</h3>
+                        <p>${{ "%.2f"|format(put_price) }}</p>
+                    </div>
                 </div>
-                <div class="result-item">
-                    <h3>Put Option Price:</h3>
-                    <p>${{ "%.2f"|format(put_price) }}</p>
+            </div>
+
+            <!-- Greeks -->
+            <div class="greeks-section">
+                <h2>The Greeks</h2>
+                
+                <!-- Delta -->
+                <div class="greek-row">
+                    <div class="greek-info">
+                        <h3>Delta (Δ)</h3>
+                        <p class="greek-description">Price sensitivity to underlying asset</p>
+                    </div>
+                    <div class="greek-values">
+                        <div class="greek-value">
+                            <span class="label">Call:</span>
+                            <span class="value">{{ "%.4f"|format(call_delta) }}</span>
+                        </div>
+                        <div class="greek-value">
+                            <span class="label">Put:</span>
+                            <span class="value">{{ "%.4f"|format(put_delta) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gamma -->
+                <div class="greek-row">
+                    <div class="greek-info">
+                        <h3>Gamma (Γ)</h3>
+                        <p class="greek-description">Rate of change of Delta</p>
+                    </div>
+                    <div class="greek-values">
+                        <div class="greek-value single">
+                            <span class="value">{{ "%.6f"|format(gamma) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vega -->
+                <div class="greek-row">
+                    <div class="greek-info">
+                        <h3>Vega (ν)</h3>
+                        <p class="greek-description">Sensitivity to volatility</p>
+                    </div>
+                    <div class="greek-values">
+                        <div class="greek-value single">
+                            <span class="value">{{ "%.4f"|format(vega) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Theta -->
+                <div class="greek-row">
+                    <div class="greek-info">
+                        <h3>Theta (Θ)</h3>
+                        <p class="greek-description">Time decay per day</p>
+                    </div>
+                    <div class="greek-values">
+                        <div class="greek-value">
+                            <span class="label">Call:</span>
+                            <span class="value">{{ "%.4f"|format(call_theta/365) }}</span>
+                        </div>
+                        <div class="greek-value">
+                            <span class="label">Put:</span>
+                            <span class="value">{{ "%.4f"|format(put_theta/365) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rho -->
+                <div class="greek-row">
+                    <div class="greek-info">
+                        <h3>Rho (ρ)</h3>
+                        <p class="greek-description">Interest rate sensitivity</p>
+                    </div>
+                    <div class="greek-values">
+                        <div class="greek-value">
+                            <span class="label">Call:</span>
+                            <span class="value">{{ "%.4f"|format(call_rho) }}</span>
+                        </div>
+                        <div class="greek-value">
+                            <span class="label">Put:</span>
+                            <span class="value">{{ "%.4f"|format(put_rho) }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         {% endif %}
