@@ -24,6 +24,52 @@ def calc_d2(d1, sigma, T):
     d2 = d1 - sigma * math.sqrt(T)
     return d2
 
+def calc_call_delta(S, K, T, r, sigma):
+    d1 = calc_d1(S, K, T, r, sigma)
+    call_delta = sp.stats.norm.cdf(d1)
+    return call_delta
+
+def calc_put_delta(S, K, T, r, sigma):
+    d1 = calc_d1(S, K, T, r, sigma)
+    put_delta = sp.stats.norm.cdf(d1) - 1
+    return put_delta
+
+def calc_gamma(S, K, T, r, sigma):
+    d1 = calc_d1(S, K, T, r, sigma)
+    gamma = sp.stats.norm.pdf(d1) / (S * sigma * math.sqrt(T))
+    return gamma
+
+def calc_vega(S, K, T, r, sigma):
+    d1 = calc_d1(S, K, T, r, sigma)
+    vega = S * sp.stats.norm.pdf(d1) * math.sqrt(T)
+    return vega
+
+def calc_call_theta(S, K, T, r, sigma):
+    d1 = calc_d1(S, K, T, r, sigma)
+    d2 = calc_d2(d1, sigma, T)
+    call_theta = (-S * sp.stats.norm.pdf(d1) * sigma / (2 * math.sqrt(T)) -
+                  r * K * math.exp(-r * T) * sp.stats.norm.cdf(d2))
+    return call_theta
+
+def calc_put_theta(S, K, T, r, sigma):
+    d1 = calc_d1(S, K, T, r, sigma)
+    d2 = calc_d2(d1, sigma, T)
+    put_theta = (-S * sp.stats.norm.pdf(d1) * sigma / (2 * math.sqrt(T)) +
+                  r * K * math.exp(-r * T) * sp.stats.norm.cdf(-d2))
+    return put_theta
+
+def calc_call_rho(S, K, T, r, sigma):
+    d1 = calc_d1(S, K, T, r, sigma)
+    d2 = calc_d2(d1, sigma, T)
+    call_rho = K * T * math.exp(-r * T) * sp.stats.norm.cdf(d2)
+    return call_rho
+
+def calc_put_rho(S, K, T, r, sigma):
+    d1 = calc_d1(S, K, T, r, sigma)
+    d2 = calc_d2(d1, sigma, T)
+    put_rho = -K * T * math.exp(-r * T) * sp.stats.norm.cdf(-d2)
+    return put_rho
+
 @app.route("/", methods=["GET", "POST"])
 def main(): 
     # Initialize Values
