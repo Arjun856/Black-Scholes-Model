@@ -17,3 +17,11 @@ T = Time to expiration
 r = Risk-free interest rate
 σ = Volatility
 N() = Standard normal cumulative distribution function (CDF)
+
+Greek Implementation:
+
+Delta   -> Sensitivity to stock price
+Gamma   -> Sensitivity of Delta to stock price
+Vega    -> Sensitivity to volatility
+Theta   -> Sensitivity to time
+Rho     -> Sensitivity to interest rate
